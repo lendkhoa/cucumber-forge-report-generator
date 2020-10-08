@@ -242,3 +242,41 @@ i.fa-angle-right, i.fa-angle-down {
   border: 0;
   margin-top: 1em;
 }
+.main-dark {
+    margin-bottom: 75vh;
+    margin-left: 30vw;
+    padding: 0px 10px;
+    background-color: #222;
+    color: #e6e6e6;
+    border-color: #e6e6e6;
+}
+.main-dark h2 {
+    font-family: 'Roboto Slab', sans-serif;
+    font-size: x-large;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    margin-top: 0em;
+    padding-top: 0.5em;
+}
+.main.feature-wrapper.feature-body.scenario-body.docstring pre{
+  color: #222222;
+}
+.main-dark.feature-wrapper.feature-body.scenario-body.docstring pre{
+  color: #e6e6e6;
+  border-color: #e6e6e6;
+}
+.switch {
+    align-self: flex-end;
+    margin: 0.9375rem;
+}
+.inner-switch {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #555;
+    border-radius: 1.25rem;
+    width: 3.125rem;
+    text-align: center;
+    font-size: 1rem;
+    padding: 0.1875rem;
+    margin-left: 0.3125rem;
+}

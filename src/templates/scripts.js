@@ -1,6 +1,19 @@
 /* globals window, document */
 let pauseScrollActions = false;
 
+const toggleDarkMode = () => {
+  let docBody = document.getElementById('mainContent');
+  let switchState = document.getElementById('inner-switch');
+  if(docBody.className == 'main-dark') {
+      docBody.className = "main"
+      switchState.innerHTML = "OFF";
+  } else {
+    docBody.className = "main-dark"
+    switchState.innerHTML = "ON";
+  }
+  document.getElementsByClassName('feature-body').namedItem('feature-description').innerHTML = "!!!!!!";
+}
+
 const toggleSettingsDrawer = () => {
   document.getElementById('settingsDrawer').classList.toggle('active');
 };
@@ -168,6 +181,10 @@ const init = () => {
   const tagsCheckbox = document.getElementById('tagsCheckbox');
   if (tagsCheckbox) {
     tagsCheckbox.addEventListener('click', toggleTagDisplay);
+  }
+  const darkMode = document.getElementById('inner-switch');
+  if (darkMode) {
+      darkMode.addEventListener('click', toggleDarkMode);
   }
 
   // Open the first feature.
