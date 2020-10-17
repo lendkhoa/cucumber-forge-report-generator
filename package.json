@@ -28,6 +28,7 @@
     "repositoryUrl": "https://github.com/cerner/cucumber-forge-report-generator.git"
   },
   "dependencies": {
+    "darkmode-js": "^1.5.7",
     "directory-tree": "^2.2.4",
     "handlebars": "^4.7.6",
     "i18next": "^19.5.2",
