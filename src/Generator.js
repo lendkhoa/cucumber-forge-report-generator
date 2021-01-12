@@ -6,6 +6,7 @@ const i18nBackend = require('i18next-fs-backend');
 const moment = require('moment');
 const os = require('os');
 const path = require('path');
+const lunr = require('lunr');
 const SUPPORTED_LANGUAGES = require('./locales/supportedLocales.json');
 
 const FILE_ENCODING = 'utf-8';
@@ -21,6 +22,7 @@ let cssStyles;
 let scripts;
 let logo;
 let cog;
+let indexFeatures = new Map();
 
 let projectName = 'Feature documentation';
 let reportName = DEFAULT_REPORT_NAME;
@@ -267,6 +269,12 @@ const getFeaturesHtml = (featureFileTree) => {
   featureFileTree.children.forEach((child) => {
     if (child.type === 'file') {
       featuresHtml += featureHbTemplate(child.feature);
+      let feature = {
+        name: child.name,
+        path: child.path,
+        text: featuresHtml,
+      }
+      indexFeatures.set(feature.name, feature);
     } else if (child.type === 'directory') {
       featuresHtml += getFeaturesHtml(child);
     }
@@ -336,6 +344,9 @@ const create = (directoryPath) => {
   if (featureFileTree.children.length === 0) {
     throw new Error('No feature files were found in the given directory.');
   }
+  indexFeatureTree(featureFileTree);
+  // search index first
+
   return docHbTemplate({
     cssStyles,
     scripts,
@@ -348,6 +359,45 @@ const create = (directoryPath) => {
     featuresHtml: getFeaturesHtml(featureFileTree),
     sidenavButtonsHtml: getSidenavButtonsHtml(featureFileTree),
   });
+};
+
+const indexFeatureTree = (featureFileTree) => {
+  console.log("Creating json index obj");
+  getFeaturesHtml(featureFileTree);
+
+  let indexFiles = [];
+  indexFeatures.forEach(function(value, key){
+    indexFiles.push({name: value.name, path: value.path, text: value.text});
+  });
+  // console.log("Verify index files");
+  // console.log(indexFiles);
+
+  let idx = lunr(function () {
+    this.ref('name')
+    this.field('text')
+
+    indexFiles.forEach(function (doc) {
+      this.add(doc)
+    }, this)
+  });
+
+  let searchResult = idx.search("Executing DM_RDM_ADD_REG_PROV_VIEW README");
+  console.log(searchResult);
+  if(searchResult.length === 0) {
+    console.log("No match");
+  }
+  else {
+      searchResult.forEach(function(match) {
+        if(match.score >= 0.50) {
+          console.log(indexFeatures.get(match.ref).name);
+          console.log("_____________Print matched feature tree______________");
+          const feature1 = getFeatureFromFile(indexFeatures.get(match.ref).path);
+          if (includeFeature(feature1)) {
+              console.log(feature1)
+          }
+        }
+      });
+  }
 };
 
 class Generator {

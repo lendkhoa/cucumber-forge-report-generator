@@ -24,7 +24,9 @@
   "author": "Cerner Corporation",
   "license": "Apache-2.0",
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "repositoryUrl": "https://github.com/cerner/cucumber-forge-report-generator.git"
   },
   "dependencies": {
@@ -32,6 +34,7 @@
     "handlebars": "^4.7.6",
     "i18next": "^19.7.0",
     "i18next-fs-backend": "^1.0.7",
+    "lunr": "^2.3.9",
     "moment": "^2.28.0"
   },
   "devDependencies": {
